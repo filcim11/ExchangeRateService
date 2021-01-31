@@ -2,14 +2,8 @@
 using Crayon_ExchangeRateService.ExternalServices;
 using Crayon_ExchangeRateService.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Crayon_ExchangeRateService.Controllers

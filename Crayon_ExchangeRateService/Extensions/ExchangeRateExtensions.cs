@@ -13,6 +13,7 @@ namespace Crayon_ExchangeRateService.Extensions
 
         public static void ValidateInputRate(this ExchangeRateInput rateInput)
         {
+            // TODO - Probably the best way is to load all currencies on Startup.cs
             var currencies = new string[] { "CAD", "HKD", "USD", "PHP", "DKK", "HUF", "CZK", "GBP", "RON",
                 "SEK", "IDR", "INR", "BRL", "RUB", "HRK", "JPY", "THB", "CHF", "EUR", "MYR", "BGN", "TRY",
                 "CNY", "NOK", "NZD", "ZAR", "MXN", "SGD", "AUD", "ILS", "KRW", "PLN"};
@@ -65,7 +66,7 @@ namespace Crayon_ExchangeRateService.Extensions
             rateOutput.Rates = rateOutput.Rates.Where(x => dates.Contains(x.Key))
                     .ToDictionary(val => val.Key, val => val.Value);
 
-            //var rates = rateOutput.Rates.GetAllRates();
+            // Because it's always goding to be one value
             var rates = rateOutput.Rates.Values.Select(v => v.Values.FirstOrDefault());
 
             rateOutput.MinRate = rateOutput.Rates.Where(x => x.Value.ContainsValue(rates.Min()))
@@ -75,16 +76,18 @@ namespace Crayon_ExchangeRateService.Extensions
             rateOutput.AvgRate = rates.Average();
         }
 
-        private static List<double> GetAllRates(this Dictionary<string, Dictionary<string, double>> rates)
-        {
-            var ratesList = new List<double>();
+        #region GetAllRatesOld
+        //private static List<double> GetAllRates(this Dictionary<string, Dictionary<string, double>> rates)
+        //{
+        //    var ratesList = new List<double>();
 
-            foreach (var rate in rates)
-            {
-                ratesList.AddRange(rate.Value.Values.ToList());
-            }
+        //    foreach (var rate in rates)
+        //    {
+        //        ratesList.AddRange(rate.Value.Values.ToList());
+        //    }
 
-            return ratesList;
-        }
+        //    return ratesList;
+        //}
+        #endregion
     }
 }

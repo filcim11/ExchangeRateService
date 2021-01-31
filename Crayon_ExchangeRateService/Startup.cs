@@ -20,6 +20,7 @@ namespace Crayon_ExchangeRateService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddRouting(opt => opt.LowercaseUrls = true);
             services.AddScoped<IExchangeRateService, ExchangeRateService>();
         }
 

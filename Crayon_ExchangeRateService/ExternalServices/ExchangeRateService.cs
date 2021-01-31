@@ -20,14 +20,12 @@ namespace Crayon_ExchangeRateService.ExternalServices
         {
             using (var client = new HttpClient())
             {
-                //Passing service base url  
                 var baseUri = _configuration.GetSection("BaseUri").Get<string>();
                 client.BaseAddress = new Uri(baseUri);
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                //Sending request to find web api REST service resource GetDepartments using HttpClient
                 return await client
                         .GetAsync(@$"history?start_at={rateInput.MinDate}&end_at={rateInput.MaxDate}&base={rateInput.BaseCurr}&symbols={rateInput.TargetCurr}");
             }

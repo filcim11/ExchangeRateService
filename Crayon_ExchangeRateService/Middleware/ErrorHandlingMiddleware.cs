@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,10 +11,12 @@ namespace Crayon_ExchangeRateService.Middleware
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -38,10 +38,12 @@ namespace Crayon_ExchangeRateService.Middleware
             switch (ex)
             {
                 case ApiException ae:
+                    _logger.LogError(ex, "REST ERROR");
                     errors = ae.Error;
                     context.Response.StatusCode = (int)ae.StatusCode;
                     break;
                 case Exception e:
+                    _logger.LogError(ex.Message, "SERVER ERROR");
                     errors = string.IsNullOrWhiteSpace(e.Message) ? "Error" : e.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
